@@ -23,24 +23,35 @@ public class User {
     private String avatar;
     private Enum role; //??
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Pregunta> preguntas;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Respuesta> respuestas;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Notificacion> notificacion;
-
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany()
+    @JoinTable(
+            name = "preguntas_followers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pregunta_id")
+    )
     private List<Pregunta> followedPreguntas;
 
-    @ManyToMany(mappedBy = "followers")
-    private List<Tema> followedTemas;
+        @ManyToMany()
+        @JoinTable(
+                name = "temas_followers",
+                joinColumns = @JoinColumn(name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "tema_id")
+        )
+        private List<Tema> followedTemas;
 
-    @OneToMany(mappedBy = "user")
-    private List<VotoPregunta> votosPregunta;
 
-    @OneToMany(mappedBy = "user")
-    private List<VotoRespuesta> votosRespuesta;
+    public User(Long id, String username, String password, String email, String avatar, Enum role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.avatar = avatar;
+        this.role = role;
+    }
 }

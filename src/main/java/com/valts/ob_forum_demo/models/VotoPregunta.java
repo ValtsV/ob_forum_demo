@@ -12,19 +12,22 @@ import javax.persistence.*;
 @Data
 
 @Entity
-@Table(name = "votos_pregunta")
+@Table(name = "votos_preguntas")
 public class VotoPregunta {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private VotoPreguntaKey id;
     private boolean voto; //true for +1, false for -1, if user clicks again - delete the record
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "pregunta_id", referencedColumnName = "id")
+    @MapsId("preguntaId")
+    @JoinColumn(name = "pregunta_id")
     private Pregunta pregunta;
+
+
 }

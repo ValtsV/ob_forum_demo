@@ -20,21 +20,17 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "respuesta_text")
     private String respuestaText;
+    @Column(name = "created_at")
     private Date createdAt;
+    @Column(name = "is_pinned")
     private boolean isPinned;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "pregunta_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
     private Pregunta pregunta;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne()
     private User user;
-
-    @OneToMany(mappedBy = "respuesta")
-    private List<VotoRespuesta> votosRespuesta;
-
-
 
 }

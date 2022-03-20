@@ -13,20 +13,21 @@ import java.util.List;
 @Data
 
 @Entity
-@Table(name = "votos_respuesta")
+@Table(name = "votos_respuestas")
 public class VotoRespuesta {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long votosRespuestaId;
+    @EmbeddedId
+    private VotoRespuestaKey id;
     private boolean voto; //true for +1, false for -1, if user clicks again - delete the record
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "pregunta_id", referencedColumnName = "id")
+    @MapsId("respuestaId")
+    @JoinColumn(name = "respuesta_id")
     private Respuesta respuesta;
 
 

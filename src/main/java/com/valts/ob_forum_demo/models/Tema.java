@@ -1,10 +1,12 @@
 package com.valts.ob_forum_demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 //Lombok
@@ -14,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "temas")
-public class Tema {
+public class Tema implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,21 +26,21 @@ public class Tema {
     @Column(name = "is_pinned")
     private boolean isPinned;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "curso_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    @OneToOne(mappedBy = "curso", cascade = CascadeType.ALL)
-    private Modulo modulo;
+    @ManyToMany(mappedBy = "followedTemas")
+    private List<User> followers;
 
-    @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tema")
     private List<Pregunta> preguntas;
 
-    @ManyToMany
-    @JoinTable(
-            name = "followers_temas",
-            joinColumns = @JoinColumn(name = "tema_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    private List<Tema> followers;
+
+    public Tema(Long id, String title, String description, boolean isPinned) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isPinned = isPinned;
+    }
 }

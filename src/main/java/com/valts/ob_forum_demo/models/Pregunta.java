@@ -22,31 +22,25 @@ public class Pregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String descripción;
+    private String description;
+    @Column(name = "created_at")
     private Date createdAt;
+    @Column(name = "is_pinned")
     private boolean isPinned;
 
-    private Long userId;
 
     @ManyToOne()
-    @JoinColumn(name = "tema_id", referencedColumnName = "id", nullable = false)
-    private Long temaId;
+    private Tema tema;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "pregunta")
     private List<Respuesta> respuestas;
 
-    @ManyToMany
-    @JoinTable(
-            name = "followers_preguntas",
-            joinColumns = @JoinColumn(name = "pregunta_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
+    @ManyToMany(mappedBy = "followedPreguntas")
     private List<User> followers;
 
-    @OneToMany(mappedBy = "pregunta")
-    private List<VotoPregunta> votosPregunta;
+
+
 }
