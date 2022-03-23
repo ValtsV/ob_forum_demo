@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //Lombok
 @Data
@@ -22,10 +24,8 @@ public class Modulo {
     private String title;
     private String description;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "tema_id", referencedColumnName = "id")
-    @OneToOne
-    private Tema tema;
+    @OneToMany()
+    private List<Tema> temas = new ArrayList<>();
 
     public Modulo(Long id, String title, String description) {
         this.id = id;

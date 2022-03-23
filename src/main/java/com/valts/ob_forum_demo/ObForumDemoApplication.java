@@ -55,8 +55,17 @@ public class ObForumDemoApplication {
 		Modulo mod2 = new Modulo(null, "modulo title2", "modulo desc2");
 
 //		tema2.setModulo(mod1);
-		mod1.setTema(tema2);
-		mod2.setTema(tema3);
+//		mod1.getTemas().add(tema1);
+//		mod1.getTemas().add(tema2);
+//		mod2.getTemas().add(tema3);
+
+		modelRepo.save(mod1);
+		modelRepo.save(mod2);
+
+		tema1.setModulo(mod1);
+		tema2.setModulo(mod1);
+		tema3.setModulo(mod2);
+
 
 
 
@@ -83,8 +92,8 @@ public class ObForumDemoApplication {
 		temaRepo.save(tema4);
 //		temaRepo.saveAll(temas);
 
-		modelRepo.save(mod1);
-		modelRepo.save(mod2);
+//		modelRepo.save(mod1);
+//		modelRepo.save(mod2);
 
 		preguntaRepository.save(pregunta1);
 		preguntaRepository.save(pregunta2);

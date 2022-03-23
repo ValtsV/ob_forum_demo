@@ -38,10 +38,8 @@ public class Tema implements Serializable {
     @OneToMany(mappedBy = "tema")
     private List<Pregunta> preguntas;
 
-    @OneToOne(mappedBy ="tema",cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
-//    @OneToOne(mappedBy = "tema")
-//    @OneToOne(mappedBy = "tema", orphanRemoval = true)
     private Modulo modulo;
 
 
