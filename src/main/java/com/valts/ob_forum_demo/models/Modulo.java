@@ -22,8 +22,9 @@ public class Modulo {
     private String title;
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+//    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "tema_id", referencedColumnName = "id")
+    @OneToOne
     private Tema tema;
 
     public Modulo(Long id, String title, String description) {

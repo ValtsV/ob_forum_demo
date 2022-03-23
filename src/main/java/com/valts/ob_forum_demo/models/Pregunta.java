@@ -1,10 +1,12 @@
 package com.valts.ob_forum_demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,12 +26,13 @@ public class Pregunta {
     private String title;
     private String description;
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
     @Column(name = "is_pinned")
     private boolean isPinned;
 
 
     @ManyToOne()
+    @JsonIgnore
     private Tema tema;
 
     @ManyToOne()
@@ -41,6 +44,11 @@ public class Pregunta {
     @ManyToMany(mappedBy = "followedPreguntas")
     private List<User> followers;
 
-
-
+    public Pregunta(Long id, String title, String description, LocalDate createdAt, boolean isPinned) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.isPinned = isPinned;
+    }
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +27,18 @@ public class Curso implements Serializable {
     private String name;
     private String avatar;
 
+    @ManyToMany(mappedBy = "attendedCursos")
+    @JsonIgnore
+    private List<User> enrolledUsers;
 
+//    @OneToMany(mappedBy = "curso")
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Tema> temas;
 
+    public Curso(Long id, String name, String avatar) {
+        this.id = id;
+        this.name = name;
+        this.avatar = avatar;
+    }
 }

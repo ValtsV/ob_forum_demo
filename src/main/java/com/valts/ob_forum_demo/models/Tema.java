@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 //Lombok
 @AllArgsConstructor
@@ -31,10 +32,17 @@ public class Tema implements Serializable {
     private Curso curso;
 
     @ManyToMany(mappedBy = "followedTemas")
+    @JsonIgnore
     private List<User> followers;
 
     @OneToMany(mappedBy = "tema")
     private List<Pregunta> preguntas;
+
+    @OneToOne(mappedBy ="tema",cascade = CascadeType.ALL)
+    @JsonIgnore
+//    @OneToOne(mappedBy = "tema")
+//    @OneToOne(mappedBy = "tema", orphanRemoval = true)
+    private Modulo modulo;
 
 
     public Tema(Long id, String title, String description, boolean isPinned) {

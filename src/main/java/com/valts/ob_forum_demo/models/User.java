@@ -45,6 +45,13 @@ public class User {
         )
         private List<Tema> followedTemas;
 
+        @ManyToMany(fetch = FetchType.EAGER)
+        @JoinTable(
+                name = "cursos_users",
+                joinColumns = @JoinColumn(name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "curso_id")
+        )
+        private List<Curso> attendedCursos;
 
     public User(Long id, String username, String password, String email, String avatar, Enum role) {
         this.id = id;
