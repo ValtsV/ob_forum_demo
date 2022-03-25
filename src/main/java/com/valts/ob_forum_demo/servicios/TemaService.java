@@ -2,6 +2,7 @@ package com.valts.ob_forum_demo.servicios;
 
 import com.valts.ob_forum_demo.dto.TemaDTO;
 import com.valts.ob_forum_demo.models.Curso;
+import com.valts.ob_forum_demo.models.Modulo;
 import com.valts.ob_forum_demo.models.Tema;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface TemaService {
     void deleteAllTemas();
 
     TemaDTO getTemaDto(Long id);
+
+    List<Tema> getTemas2(Long cursoId, List<Long> moduloId);
 }

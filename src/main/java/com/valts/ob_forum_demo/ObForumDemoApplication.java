@@ -29,9 +29,33 @@ public class ObForumDemoApplication {
 		ModuloRepository modelRepo = ctx.getBean(ModuloRepository.class);
 		TemaRepository temaRepo = ctx.getBean((TemaRepository.class));
 		PreguntaRepository preguntaRepository = ctx.getBean(PreguntaRepository.class);
+		RespuestaRepository respuestaRepository = ctx.getBean(RespuestaRepository.class);
+		VotoPreguntaRepository votoPreguntaRepository = ctx.getBean(VotoPreguntaRepository.class);
+
+		VotoPregunta votoPregunta1 = new VotoPregunta(null, true);
+		VotoPregunta votoPregunta2 = new VotoPregunta(null, true);
+		VotoPregunta votoPregunta3 = new VotoPregunta(null, false);
+		VotoPregunta votoPregunta4 = new VotoPregunta(null, true);
+		VotoPregunta votoPregunta5 = new VotoPregunta(null, false);
+		VotoPregunta votoPregunta6 = new VotoPregunta(null, true);
+
+		Respuesta respuesta1 = new Respuesta(null, "respText1", LocalDate.now(), false);
+		Respuesta respuesta2 = new Respuesta(null, "respText2", LocalDate.now(), false);
+		Respuesta respuesta3 = new Respuesta(null, "respText3", LocalDate.now(), false);
+
+
 
 		Pregunta pregunta1 = new Pregunta(null, "title1", "descripcion1", LocalDate.now(), false);
 		Pregunta pregunta2 = new Pregunta(null, "title2", "descripcion2", LocalDate.now(), false);
+
+
+		votoPregunta1.setPregunta(pregunta1);
+		votoPregunta2.setPregunta(pregunta1);
+		votoPregunta3.setPregunta(pregunta1);
+		votoPregunta4.setPregunta(pregunta1);
+		votoPregunta5.setPregunta(pregunta1);
+		votoPregunta6.setPregunta(pregunta1);
+
 
 		Curso curso1 = new Curso(null, "React", null);
 		Curso curso2 = new Curso(null, "Angular", null);
@@ -41,6 +65,18 @@ public class ObForumDemoApplication {
 
 		userRepo.save(user1);
 		userRepo.save(user2);
+
+		respuesta1.setUser(user1);
+		respuesta2.setUser(user2);
+		respuesta3.setUser(user1);
+
+		respuesta1.setPregunta(pregunta1);
+		respuesta2.setPregunta(pregunta1);
+		respuesta3.setPregunta(pregunta2);
+
+		pregunta1.setUser(user1);
+		pregunta2.setUser(user2);
+
 
 		Tema tema1 = new Tema(null, "tema1", "descripcion o algo", false);
 		Tema tema2 = new Tema(null, "tema2", "descripcion", false);
@@ -63,7 +99,7 @@ public class ObForumDemoApplication {
 		modelRepo.save(mod2);
 
 		tema1.setModulo(mod1);
-		tema2.setModulo(mod1);
+		tema2.setModulo(mod2);
 		tema3.setModulo(mod2);
 
 
@@ -98,6 +134,16 @@ public class ObForumDemoApplication {
 		preguntaRepository.save(pregunta1);
 		preguntaRepository.save(pregunta2);
 
+		respuestaRepository.save(respuesta1);
+		respuestaRepository.save(respuesta2);
+		respuestaRepository.save(respuesta3);
+
+		votoPreguntaRepository.save(votoPregunta1);
+		votoPreguntaRepository.save(votoPregunta2);
+		votoPreguntaRepository.save(votoPregunta3);
+		votoPreguntaRepository.save(votoPregunta4);
+		votoPreguntaRepository.save(votoPregunta5);
+		votoPreguntaRepository.save(votoPregunta6);
 
 		UserServiceImpl serv = new UserServiceImpl(userRepo, cursoRepo);
 

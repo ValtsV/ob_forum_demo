@@ -2,6 +2,7 @@ package com.valts.ob_forum_demo.servicios.implementations;
 
 import com.valts.ob_forum_demo.dto.PreguntaDTO;
 import com.valts.ob_forum_demo.dto.TemaDTO;
+import com.valts.ob_forum_demo.models.Modulo;
 import com.valts.ob_forum_demo.models.Pregunta;
 import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.repos.TemaRepository;
@@ -105,5 +106,15 @@ public class TemaServiceImpl implements TemaService {
         preguntaDto.setTotalRespuestas(pregunta.getRespuestas().size());
 
         return preguntaDto;
+    }
+
+    @Override
+    public List<Tema> getTemas2(Long cursoId, List<Long> moduloId) {
+        if (moduloId == null) {
+            return temaRepo.findByCursoId(cursoId);
+        }
+
+        return temaRepo.findByCursoIdAndModuloIdIn(cursoId, moduloId);
+
     }
 }

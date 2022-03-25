@@ -7,6 +7,7 @@ import com.valts.ob_forum_demo.servicios.TemaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -18,11 +19,11 @@ public class TemaController {
         this.temaService = temaService;
     }
 
-    @GetMapping("/foro/temas")
-    public ResponseEntity<List<Tema>> getTemas() {
-        List<Tema> temas = temaService.findAll();
-        return ResponseEntity.ok(temas);
-    }
+//    @GetMapping("/foro/temas")
+//    public ResponseEntity<List<Tema>> getTemas() {
+//        List<Tema> temas = temaService.findAll();
+//        return ResponseEntity.ok(temas);
+//    }
 
 //    @GetMapping("/foro/temas/{id}")
 //    public ResponseEntity<Tema> getTema(@PathVariable Long id) {
@@ -59,7 +60,21 @@ public class TemaController {
 
     @GetMapping("/foro/temas/{id}")
     public ResponseEntity<TemaDTO> getTema(@PathVariable Long id) {
+//        TODO: Only admins can see if Tema is pinned?
         TemaDTO tema = temaService.getTemaDto(id);
         return ResponseEntity.ok(tema);
     }
+
+
+    @GetMapping("/foro/temas")
+    public ResponseEntity<List<Tema>> getTemas(@RequestParam Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
+//        TODO: Add access modifiers
+//        TODO: Sort by pinned first
+        //        get list of temas from service
+
+        List<Tema> temas = temaService.getTemas2(cursoId, moduloId);
+        return ResponseEntity.ok(temas);
+    }
+
+
 }

@@ -24,7 +24,7 @@ public class Modulo {
     private String title;
     private String description;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "modulo")
     private List<Tema> temas = new ArrayList<>();
 
     public Modulo(Long id, String title, String description) {

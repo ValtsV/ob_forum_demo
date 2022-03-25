@@ -17,4 +17,6 @@ public interface RespuestaService {
     void deleteById(Long id);
 
     void deleteAll();
+
+
 }

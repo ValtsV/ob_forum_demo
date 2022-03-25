@@ -36,13 +36,18 @@ public class Pregunta {
     private Tema tema;
 
     @ManyToOne()
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "pregunta")
     private List<Respuesta> respuestas;
 
     @ManyToMany(mappedBy = "followedPreguntas")
+    @JsonIgnore
     private List<User> followers;
+
+    @OneToMany(mappedBy = "pregunta")
+    private List<VotoPregunta> votosPregunta;
 
     public Pregunta(Long id, String title, String description, LocalDate createdAt, boolean isPinned) {
         this.id = id;

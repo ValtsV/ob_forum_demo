@@ -1,5 +1,6 @@
 package com.valts.ob_forum_demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,10 +25,20 @@ public class User {
     private Enum role; //??
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Pregunta> preguntas;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<VotoPregunta> votosPregunta;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Respuesta> respuestas;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<VotoRespuesta> votosRespuesta;
 
     @ManyToMany()
     @JoinTable(
@@ -51,6 +62,7 @@ public class User {
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "curso_id")
         )
+        @JsonIgnore
         private List<Curso> attendedCursos;
 
     public User(Long id, String username, String password, String email, String avatar, Enum role) {

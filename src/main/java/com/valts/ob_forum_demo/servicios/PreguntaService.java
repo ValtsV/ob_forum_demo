@@ -1,5 +1,6 @@
 package com.valts.ob_forum_demo.servicios;
 
+import com.valts.ob_forum_demo.dto.PreguntaWithUserDTO;
 import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.models.Pregunta;
 
@@ -17,4 +18,6 @@ public interface PreguntaService {
     void deleteById(Long id);
 
     void deleteAll();
+
+    List<PreguntaWithUserDTO> getPreguntas();
 }

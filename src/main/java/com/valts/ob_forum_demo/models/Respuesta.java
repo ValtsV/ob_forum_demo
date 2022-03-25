@@ -1,10 +1,12 @@
 package com.valts.ob_forum_demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,14 +25,24 @@ public class Respuesta {
     @Column(name = "respuesta_text")
     private String respuestaText;
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
     @Column(name = "is_pinned")
     private boolean isPinned;
 
     @ManyToOne()
+    @JsonIgnore
     private Pregunta pregunta;
 
     @ManyToOne()
     private User user;
 
+    @OneToMany(mappedBy = "respuesta")
+    private List<VotoRespuesta> votoRespuesta;
+
+    public Respuesta(Long id, String respuestaText, LocalDate createdAt, boolean isPinned) {
+        this.id = id;
+        this.respuestaText = respuestaText;
+        this.createdAt = createdAt;
+        this.isPinned = isPinned;
+    }
 }
