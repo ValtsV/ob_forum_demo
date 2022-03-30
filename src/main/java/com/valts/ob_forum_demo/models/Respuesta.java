@@ -37,7 +37,7 @@ public class Respuesta {
     private User user;
 
     @OneToMany(mappedBy = "respuesta")
-    private List<VotoRespuesta> votoRespuesta;
+    private List<VotoRespuesta> votosRespuesta;
 
     public Respuesta(Long id, String respuestaText, LocalDate createdAt, boolean isPinned) {
         this.id = id;

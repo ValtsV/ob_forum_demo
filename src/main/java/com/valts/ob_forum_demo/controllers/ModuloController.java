@@ -1,7 +1,6 @@
 package com.valts.ob_forum_demo.controllers;
 
 import com.valts.ob_forum_demo.models.Modulo;
-import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.servicios.implementations.ModuloServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

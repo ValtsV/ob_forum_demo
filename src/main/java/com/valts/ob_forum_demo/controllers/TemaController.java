@@ -1,13 +1,11 @@
 package com.valts.ob_forum_demo.controllers;
 
 import com.valts.ob_forum_demo.dto.TemaDTO;
-import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.servicios.TemaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -18,18 +16,6 @@ public class TemaController {
     public TemaController(TemaService temaService) {
         this.temaService = temaService;
     }
-
-//    @GetMapping("/foro/temas")
-//    public ResponseEntity<List<Tema>> getTemas() {
-//        List<Tema> temas = temaService.findAll();
-//        return ResponseEntity.ok(temas);
-//    }
-
-//    @GetMapping("/foro/temas/{id}")
-//    public ResponseEntity<Tema> getTema(@PathVariable Long id) {
-//        Tema tema = temaService.findOne(id);
-//        return ResponseEntity.ok(tema);
-//    }
 
 
     @PostMapping("/foro/temas")
@@ -67,12 +53,16 @@ public class TemaController {
 
 
     @GetMapping("/foro/temas")
-    public ResponseEntity<List<Tema>> getTemas(@RequestParam Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
+    public ResponseEntity<List<Tema>> getTemas(@RequestParam(required = false) Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
 //        TODO: Add access modifiers
 //        TODO: Sort by pinned first
-        //        get list of temas from service
-
-        List<Tema> temas = temaService.getTemas2(cursoId, moduloId);
+        //        get list of all temas from service
+        if (cursoId == null && moduloId == null) {
+            List<Tema> temas = temaService.findAll();
+            return ResponseEntity.ok(temas);
+        }
+//        gets list of temas where cursoID, moduloId matches
+        List<Tema> temas = temaService.getTemasFiltered(cursoId, moduloId);
         return ResponseEntity.ok(temas);
     }
 

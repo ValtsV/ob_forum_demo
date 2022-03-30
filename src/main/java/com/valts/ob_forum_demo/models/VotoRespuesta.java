@@ -14,24 +14,24 @@ import java.util.List;
 @Data
 
 @Entity
-@Table(name = "votos_respuestas")
-public class VotoRespuesta {
+//@Table(name = "votos_respuestas")
+public class VotoRespuesta extends Voto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private boolean voto; //true for +1, false for -1, if user clicks again - delete the record
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//    private boolean voto; //true for +1, false for -1, if user clicks again - delete the record
 
     @ManyToOne
     @JoinColumn(name = "respuesta_id")
+    @JsonIgnore
     private Respuesta respuesta;
 
-    @ManyToOne()
-    @JsonIgnore
-    private User user;
+//    @ManyToOne()
+//    @JsonIgnore
+//    private User user;
 
     public VotoRespuesta(Long id, boolean voto) {
-        this.id = id;
-        this.voto = voto;
+        super(id, voto);
     }
 }

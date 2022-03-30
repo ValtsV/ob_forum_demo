@@ -1,8 +1,10 @@
 package com.valts.ob_forum_demo.controllers;
 
+import com.valts.ob_forum_demo.dto.RespuestaWithUserAndVotosDTO;
 import com.valts.ob_forum_demo.models.Pregunta;
 import com.valts.ob_forum_demo.models.Respuesta;
 import com.valts.ob_forum_demo.servicios.RespuestaService;
+import com.valts.ob_forum_demo.servicios.implementations.RespuestaServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,21 +13,21 @@ import java.util.List;
 @RestController
 public class RespuestaController {
 
-    private RespuestaService respuestaService;
+    private RespuestaServiceImpl respuestaService;
 
-    public RespuestaController(RespuestaService respuestaService) {
+    public RespuestaController(RespuestaServiceImpl respuestaService) {
         this.respuestaService = respuestaService;
     }
 
     @GetMapping("/foro/respuestas")
-    public ResponseEntity<List<Respuesta>> getAll() {
-        List<Respuesta> respuestas = respuestaService.findAll();
+    public ResponseEntity<List<RespuestaWithUserAndVotosDTO>> getAll(@RequestParam Long preguntaId) {
+        List<RespuestaWithUserAndVotosDTO> respuestas = respuestaService.findAll(preguntaId);
         return ResponseEntity.ok(respuestas);
     }
 
     @GetMapping("/foro/respuestas/{id}")
-    public ResponseEntity<Respuesta> getOne(@PathVariable Long id) {
-        Respuesta respuesta = respuestaService.findOne(id);
+    public ResponseEntity<RespuestaWithUserAndVotosDTO> getOne(@PathVariable Long id) {
+        RespuestaWithUserAndVotosDTO respuesta = respuestaService.findOne(id);
         return ResponseEntity.ok(respuesta);
     }
 

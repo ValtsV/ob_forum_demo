@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VotoPreguntaRepository extends JpaRepository<VotoPregunta, Long> {
+public interface VotoPreguntaRepository extends VotoBaseRepository<VotoPregunta> {
 
-    List<VotoPregunta> findByPregunta_IdEquals(Long id);
+    List<VotoPregunta> findAllByPregunta_Id(Long id);
 }

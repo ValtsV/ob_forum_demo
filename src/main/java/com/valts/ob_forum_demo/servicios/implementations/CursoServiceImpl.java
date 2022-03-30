@@ -2,9 +2,7 @@ package com.valts.ob_forum_demo.servicios.implementations;
 
 import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.repos.CursoRepository;
-import com.valts.ob_forum_demo.repos.TemaRepository;
 import com.valts.ob_forum_demo.servicios.CursoService;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +12,9 @@ import java.util.Optional;
 public class CursoServiceImpl implements CursoService {
 
     private CursoRepository cursoRepo;
-    private TemaRepository temaRepo; // why ?? I think this is not needed
 
-    public CursoServiceImpl(CursoRepository cursoRepo, TemaRepository temaRepo) {
+    public CursoServiceImpl(CursoRepository cursoRepo) {
         this.cursoRepo = cursoRepo;
-        this.temaRepo = temaRepo;
     }
 
     @Override

@@ -46,6 +46,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "pregunta_id")
     )
+    @JsonIgnore
     private List<Pregunta> followedPreguntas;
 
         @ManyToMany()
@@ -54,6 +55,7 @@ public class User {
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "tema_id")
         )
+        @JsonIgnore
         private List<Tema> followedTemas;
 
         @ManyToMany(fetch = FetchType.EAGER)

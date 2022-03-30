@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class UserDTO {
-
-    private Long id;
-    private String username;
-    private String avatar;
+public class VotosDTO {
+    private Integer positiveVotes;
+    private Integer negativeVotes;
 }

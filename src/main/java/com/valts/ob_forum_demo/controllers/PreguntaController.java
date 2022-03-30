@@ -1,10 +1,10 @@
 package com.valts.ob_forum_demo.controllers;
 
+import com.valts.ob_forum_demo.dto.PreguntaAndRespuestaUserVotosDTO;
 import com.valts.ob_forum_demo.dto.PreguntaWithUserAndVotosDTO;
 import com.valts.ob_forum_demo.dto.PreguntaWithUserDTO;
 import com.valts.ob_forum_demo.models.Pregunta;
-import com.valts.ob_forum_demo.models.User;
-import com.valts.ob_forum_demo.servicios.PreguntaService;
+import com.valts.ob_forum_demo.servicios.implementations.PreguntaServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,21 +13,26 @@ import java.util.List;
 @RestController
 public class PreguntaController {
 
-    private PreguntaService preguntaService;
+    private PreguntaServiceImpl preguntaService;
 
-    public PreguntaController(PreguntaService preguntaService) {
+    public PreguntaController(PreguntaServiceImpl preguntaService) {
         this.preguntaService = preguntaService;
     }
 
-//    @GetMapping("/foro/preguntas")
-//    public ResponseEntity<List<Pregunta>> getAll() {
-//        List<Pregunta> preguntas = preguntaService.findAll();
-//        return ResponseEntity.ok(preguntas);
-//    }
+
+    @GetMapping("/foro/preguntas")
+    public ResponseEntity<List<PreguntaWithUserDTO>> getAll(@RequestParam(required = false) Long temaId) {
+        if (temaId != null) {
+            List<PreguntaWithUserDTO> preguntas =  preguntaService.getPreguntasByTemaId(temaId);
+            return ResponseEntity.ok(preguntas);
+        }
+        List<PreguntaWithUserDTO> preguntas = preguntaService.getPreguntas();
+        return ResponseEntity.ok(preguntas);
+    }
 
     @GetMapping("/foro/preguntas/{id}")
-    public ResponseEntity<Pregunta> getOne(@PathVariable Long id) {
-        Pregunta pregunta = preguntaService.findOne(id);
+    public ResponseEntity<PreguntaAndRespuestaUserVotosDTO> getOne(@PathVariable Long id) {
+        PreguntaAndRespuestaUserVotosDTO pregunta = preguntaService.getPreguntasById(id);
         return ResponseEntity.ok(pregunta);
     }
 
@@ -57,17 +62,9 @@ public class PreguntaController {
         return ResponseEntity.noContent().build();
     }
 
-//    DTO stuff
 
-    @GetMapping("/foro/preguntas")
-    public ResponseEntity<List<PreguntaWithUserDTO>> getAll() {
-        List<PreguntaWithUserDTO> preguntas = preguntaService.getPreguntas();
-        return ResponseEntity.ok(preguntas);
-    }
 
-//    @GetMapping("/foro/preguntas/{id}")
-//    public ResponseEntity<PreguntaWithUserAndVotosDTO> getOne(@PathVariable Long id) {
-//        Pregunta pregunta = preguntaService.findOne(id);
-//        return ResponseEntity.ok(pregunta);
-//    }
+
+
+
 }

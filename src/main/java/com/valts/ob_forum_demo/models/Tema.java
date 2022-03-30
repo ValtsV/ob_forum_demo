@@ -29,6 +29,7 @@ public class Tema implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "curso_id")
+    @JsonIgnore
     private Curso curso;
 
     @ManyToMany(mappedBy = "followedTemas")

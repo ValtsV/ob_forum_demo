@@ -1,18 +1,15 @@
 package com.valts.ob_forum_demo.servicios.implementations;
 
-import com.valts.ob_forum_demo.controllers.PreguntaController;
-import com.valts.ob_forum_demo.dto.PreguntaDTO;
-import com.valts.ob_forum_demo.dto.PreguntaWithUserAndVotosDTO;
-import com.valts.ob_forum_demo.dto.PreguntaWithUserDTO;
-import com.valts.ob_forum_demo.dto.UserDTO;
+
+import com.valts.ob_forum_demo.dto.*;
 import com.valts.ob_forum_demo.models.Pregunta;
-import com.valts.ob_forum_demo.models.User;
+import com.valts.ob_forum_demo.models.Respuesta;
 import com.valts.ob_forum_demo.repos.PreguntaRepository;
-import com.valts.ob_forum_demo.repos.VotoPreguntaRepository;
 import com.valts.ob_forum_demo.servicios.PreguntaService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +17,11 @@ import java.util.Optional;
 public class PreguntaServiceImpl implements PreguntaService {
 
     private PreguntaRepository preguntaRepo;
-    private VotoPreguntaRepository votoPreguntaRepo;
+    private RespuestaServiceImpl respuestaService;
 
-
-    public PreguntaServiceImpl(PreguntaRepository preguntaRepo, VotoPreguntaRepository votoPreguntaRepo) {
+    public PreguntaServiceImpl(PreguntaRepository preguntaRepo, RespuestaServiceImpl respuestaService) {
         this.preguntaRepo = preguntaRepo;
-        this.votoPreguntaRepo = votoPreguntaRepo;
+        this.respuestaService = respuestaService;
     }
 
     @Override
@@ -100,37 +96,61 @@ public class PreguntaServiceImpl implements PreguntaService {
         return preguntasDto;
     }
 
-// add respuestas en main and put this in controller and run postman
-    public PreguntaWithUserAndVotosDTO getPreguntasById(Long id) {
-        UserDTO userDto = new UserDTO();
-        PreguntaWithUserAndVotosDTO preguntaWithUserAndVotosDto = new PreguntaWithUserAndVotosDTO();
 
-        Optional<Pregunta> preguntaOpt = preguntaRepo.findById(id);
-        if (preguntaOpt.isPresent()) {
-            Pregunta pregunta = preguntaOpt.get();
+    @Override
+    public PreguntaAndRespuestaUserVotosDTO getPreguntasById(Long id) {
+        Optional<Pregunta> preguntaOptional =  preguntaRepo.findById(id);
+        if (preguntaOptional.isPresent()) {
+            Pregunta pregunta = preguntaOptional.get();
 
-            preguntaWithUserAndVotosDto.setId(pregunta.getId());
-            preguntaWithUserAndVotosDto.setTitle(pregunta.getTitle());
-            preguntaWithUserAndVotosDto.setDescription(pregunta.getDescription());
-            preguntaWithUserAndVotosDto.setCreatedAt(pregunta.getCreatedAt());
-            preguntaWithUserAndVotosDto.setPinned(pregunta.isPinned());
-            preguntaWithUserAndVotosDto.setTotalRespuestas(pregunta.getRespuestas().size());
+            List<RespuestaWithUserAndVotosDTO> respuestasDTO = new ArrayList<>();
+            PreguntaAndRespuestaUserVotosDTO preguntaAndRespuestaUserVotosDTO = new PreguntaAndRespuestaUserVotosDTO();
 
-            userDto.setId(pregunta.getUser().getId());
-            userDto.setUsername(pregunta.getUser().getUsername());
-            userDto.setAvatar(pregunta.getUser().getAvatar());
-            preguntaWithUserAndVotosDto.setUser(userDto);
+            preguntaAndRespuestaUserVotosDTO.setId(pregunta.getId());
+            preguntaAndRespuestaUserVotosDTO.setTitle(pregunta.getTitle());
+            preguntaAndRespuestaUserVotosDTO.setDescription(pregunta.getDescription());
+            preguntaAndRespuestaUserVotosDTO.setCreatedAt(pregunta.getCreatedAt());
+            preguntaAndRespuestaUserVotosDTO.setPinned(pregunta.isPinned());
+            preguntaAndRespuestaUserVotosDTO.setTotalRespuestas(pregunta.getRespuestas().size());
 
-            return preguntaWithUserAndVotosDto;
+            List<Respuesta> respuestas = pregunta.getRespuestas();
+            respuestas.forEach(respuesta -> {
+                respuestasDTO.add(respuestaService.respuestaDTOConverter(respuesta));
+            });
+
+            preguntaAndRespuestaUserVotosDTO.setRespuestas(respuestasDTO);
+
+
+            return preguntaAndRespuestaUserVotosDTO;
         }
 
         return null;
     }
 
-//    @Override
-//    public List<PreguntaWithUserAndVotosDTO> getPreguntasById(Long id) {
-//        UserDTO userDto = new UserDTO();
-//        PreguntaWithUserAndVotosDTO preguntaWithUserAndVotosDto = new PreguntaWithUserAndVotosDTO();
-//
-//    }
+
+    @Override
+    public List<PreguntaWithUserDTO> getPreguntasByTemaId(Long id) {
+        UserDTO userDto = new UserDTO();
+        PreguntaWithUserDTO preguntaWithUserDto = new PreguntaWithUserDTO();
+        List<Pregunta> preguntas = preguntaRepo.findAllByTemaId(id);
+        List<PreguntaWithUserDTO> preguntasDto = new ArrayList<>();
+        preguntas.forEach(pregunta -> {
+            preguntaWithUserDto.setId(pregunta.getId());
+            preguntaWithUserDto.setTitle(pregunta.getTitle());
+            preguntaWithUserDto.setDescription(pregunta.getDescription());
+            preguntaWithUserDto.setCreatedAt(pregunta.getCreatedAt());
+            preguntaWithUserDto.setPinned(pregunta.isPinned());
+            preguntaWithUserDto.setTotalRespuestas(pregunta.getRespuestas().size());
+
+            userDto.setId(pregunta.getUser().getId());
+            userDto.setUsername(pregunta.getUser().getUsername());
+            userDto.setAvatar(pregunta.getUser().getAvatar());
+            preguntaWithUserDto.setUser(userDto);
+
+            preguntasDto.add(preguntaWithUserDto);
+        });
+
+        return preguntasDto;
+
+    }
 }

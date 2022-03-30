@@ -31,7 +31,6 @@ public class Curso implements Serializable {
     @JsonIgnore
     private List<User> enrolledUsers;
 
-//    @OneToMany(mappedBy = "curso")
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Tema> temas;

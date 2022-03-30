@@ -4,6 +4,7 @@ import com.valts.ob_forum_demo.models.*;
 import com.valts.ob_forum_demo.repos.*;
 import com.valts.ob_forum_demo.servicios.UserService;
 import com.valts.ob_forum_demo.servicios.implementations.UserServiceImpl;
+import com.valts.ob_forum_demo.servicios.implementations.VotoServiceImpl;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +32,10 @@ public class ObForumDemoApplication {
 		PreguntaRepository preguntaRepository = ctx.getBean(PreguntaRepository.class);
 		RespuestaRepository respuestaRepository = ctx.getBean(RespuestaRepository.class);
 		VotoPreguntaRepository votoPreguntaRepository = ctx.getBean(VotoPreguntaRepository.class);
+		VotoRespuestaRepository votoRespuestaRepository = ctx.getBean(VotoRespuestaRepository.class);
+		VotoRepository votoRepo = ctx.getBean(VotoRepository.class);
+
+
 
 		VotoPregunta votoPregunta1 = new VotoPregunta(null, true);
 		VotoPregunta votoPregunta2 = new VotoPregunta(null, true);
@@ -38,6 +43,13 @@ public class ObForumDemoApplication {
 		VotoPregunta votoPregunta4 = new VotoPregunta(null, true);
 		VotoPregunta votoPregunta5 = new VotoPregunta(null, false);
 		VotoPregunta votoPregunta6 = new VotoPregunta(null, true);
+
+		VotoRespuesta votoRespuesta1 = new VotoRespuesta(null, true);
+		VotoRespuesta votoRespuesta2 = new VotoRespuesta(null, true);
+		VotoRespuesta votoRespuesta3 = new VotoRespuesta(null, false);
+		VotoRespuesta votoRespuesta4 = new VotoRespuesta(null, true);
+		VotoRespuesta votoRespuesta5 = new VotoRespuesta(null, false);
+		VotoRespuesta votoRespuesta6 = new VotoRespuesta(null, true);
 
 		Respuesta respuesta1 = new Respuesta(null, "respText1", LocalDate.now(), false);
 		Respuesta respuesta2 = new Respuesta(null, "respText2", LocalDate.now(), false);
@@ -52,9 +64,20 @@ public class ObForumDemoApplication {
 		votoPregunta1.setPregunta(pregunta1);
 		votoPregunta2.setPregunta(pregunta1);
 		votoPregunta3.setPregunta(pregunta1);
-		votoPregunta4.setPregunta(pregunta1);
+		votoPregunta4.setPregunta(pregunta2);
 		votoPregunta5.setPregunta(pregunta1);
 		votoPregunta6.setPregunta(pregunta1);
+
+		votoRespuesta1.setRespuesta(respuesta1);
+		votoRespuesta2.setRespuesta(respuesta2);
+		votoRespuesta3.setRespuesta(respuesta1);
+		votoRespuesta4.setRespuesta(respuesta1);
+		votoRespuesta5.setRespuesta(respuesta3);
+		votoRespuesta6.setRespuesta(respuesta2);
+
+		List<Voto> wowList = new ArrayList<>();
+
+		wowList.add(votoPregunta1);
 
 
 		Curso curso1 = new Curso(null, "React", null);
@@ -120,7 +143,7 @@ public class ObForumDemoApplication {
 
 
 		pregunta1.setTema(tema1);
-		pregunta2.setTema(tema1);
+		pregunta2.setTema(tema2);
 
 		temaRepo.save(tema1);
 		temaRepo.save(tema2);
@@ -138,16 +161,48 @@ public class ObForumDemoApplication {
 		respuestaRepository.save(respuesta2);
 		respuestaRepository.save(respuesta3);
 
-		votoPreguntaRepository.save(votoPregunta1);
-		votoPreguntaRepository.save(votoPregunta2);
-		votoPreguntaRepository.save(votoPregunta3);
-		votoPreguntaRepository.save(votoPregunta4);
-		votoPreguntaRepository.save(votoPregunta5);
-		votoPreguntaRepository.save(votoPregunta6);
+
+
+//		VotoServiceImpl serv2 = new VotoServiceImpl(votoRepo);
+//		VotoServiceImpl serv2 = new VotoServiceImpl(votoRepo, votoPreguntaRepository, votoRespuestaRepository);
+
+//		serv2.addVoto(votoPregunta1);
+//		serv2.addVoto(votoPregunta2);
+//
+//		serv2.addVoto(votoRespuesta1);
+//		serv2.addVoto(votoRespuesta2);
+//
+//		serv2.updateOne(1L, votoPregunta3);
+//
+//		 serv2.findOne(1L);
+//		List<VotoPregunta> lolz =  serv2.findAllPregunta(1L);
+//		Pregunta preg = preguntaRepository.findById(1L).get();
+//		System.out.println(preg);
+//		System.out.println("HERE");
+//		System.out.println(lolz.get(1).getPregunta());
+		votoRepo.save(votoPregunta1);
+		votoRepo.save(votoPregunta2);
+		votoRepo.save(votoPregunta3);
+		votoRepo.save(votoPregunta4);
+		votoRepo.save(votoPregunta5);
+		votoRepo.save(votoPregunta6);
+
+		votoRepo.save(votoRespuesta1);
+		votoRepo.save(votoRespuesta2);
+		votoRepo.save(votoRespuesta3);
+		votoRepo.save(votoRespuesta4);
+		votoRepo.save(votoRespuesta5);
+		votoRepo.save(votoRespuesta6);
+
+
 
 		UserServiceImpl serv = new UserServiceImpl(userRepo, cursoRepo);
 
 		serv.enrollInCurso(1L, 1L);
+
+
+//		VotoServiceImpl servV = new VotoServiceImpl(votoRepo);
+//		servV.addOne(votoPregunta1);
 //		Curso curso = cursoRepo.getById(1L);
 //
 //		System.out.println(curso);

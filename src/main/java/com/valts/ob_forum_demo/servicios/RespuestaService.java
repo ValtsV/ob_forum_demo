@@ -1,14 +1,15 @@
 package com.valts.ob_forum_demo.servicios;
 
+import com.valts.ob_forum_demo.dto.RespuestaWithUserAndVotosDTO;
 import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.models.Respuesta;
 
 import java.util.List;
 
 public interface RespuestaService {
-    List<Respuesta> findAll();
+    List<RespuestaWithUserAndVotosDTO> findAll(Long preguntaId);
 
-    Respuesta findOne(Long id);
+    RespuestaWithUserAndVotosDTO findOne(Long id);
 
     Respuesta addOne(Respuesta respuesta);
 

@@ -22,5 +22,5 @@ public interface TemaService {
 
     TemaDTO getTemaDto(Long id);
 
-    List<Tema> getTemas2(Long cursoId, List<Long> moduloId);
+    List<Tema> getTemasFiltered(Long cursoId, List<Long> moduloId);
 }

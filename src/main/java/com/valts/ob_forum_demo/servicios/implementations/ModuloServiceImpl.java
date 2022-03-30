@@ -1,9 +1,7 @@
 package com.valts.ob_forum_demo.servicios.implementations;
 
 import com.valts.ob_forum_demo.models.Modulo;
-import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.repos.ModuloRepository;
-import com.valts.ob_forum_demo.repos.TemaRepository;
 import com.valts.ob_forum_demo.servicios.ModuloService;
 import org.springframework.stereotype.Service;
 
