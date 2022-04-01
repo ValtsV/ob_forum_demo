@@ -38,8 +38,8 @@ public class PreguntaController {
 
 
     @PostMapping("/foro/preguntas")
-    public ResponseEntity<Pregunta> addOne(@RequestBody Pregunta pregunta) {
-        Pregunta newPregunta =  preguntaService.addOne(pregunta);
+    public ResponseEntity<Pregunta> addOne(@RequestParam Long temaId, @RequestBody Pregunta pregunta) {
+        Pregunta newPregunta =  preguntaService.addOne(pregunta, temaId);
         return ResponseEntity.ok(newPregunta);
     }
 

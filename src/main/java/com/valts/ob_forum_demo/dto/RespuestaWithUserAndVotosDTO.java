@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +14,13 @@ import java.time.LocalDate;
 public class RespuestaWithUserAndVotosDTO {
     private Long id;
     private String respuestaText;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private boolean isPinned;
     private Long totalVotosPositivos;
     private Long totalVotosNegativos;
     private UserDTO user;
+
+
 }
+
+

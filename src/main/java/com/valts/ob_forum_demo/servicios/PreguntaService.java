@@ -14,7 +14,7 @@ public interface PreguntaService {
 
     Pregunta findOne(Long id);
 
-    Pregunta addOne(Pregunta pregunta);
+    Pregunta addOne(Pregunta pregunta, Long temaId);
 
     Pregunta updateOne(Long id, Pregunta pregunta);
 

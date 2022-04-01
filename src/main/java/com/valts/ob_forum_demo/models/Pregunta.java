@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 //Lombok
@@ -25,7 +26,7 @@ public class Pregunta {
     private String title;
     private String description;
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "is_pinned")
     private boolean isPinned;
 
@@ -38,7 +39,7 @@ public class Pregunta {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "pregunta")
+    @OneToMany(mappedBy = "pregunta", orphanRemoval = true)
     @JsonIgnore
     private List<Respuesta> respuestas;
 
@@ -46,11 +47,11 @@ public class Pregunta {
     @JsonIgnore
     private List<User> followers;
 
-    @OneToMany(mappedBy = "pregunta")
+    @OneToMany(mappedBy = "pregunta", orphanRemoval = true)
     @JsonIgnore
     private List<VotoPregunta> votosPregunta;
 
-    public Pregunta(Long id, String title, String description, LocalDate createdAt, boolean isPinned) {
+    public Pregunta(Long id, String title, String description, LocalDateTime createdAt, boolean isPinned) {
         this.id = id;
         this.title = title;
         this.description = description;

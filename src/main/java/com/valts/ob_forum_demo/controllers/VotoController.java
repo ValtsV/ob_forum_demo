@@ -1,7 +1,6 @@
 package com.valts.ob_forum_demo.controllers;
 
 import com.valts.ob_forum_demo.dto.VotoDTO;
-import com.valts.ob_forum_demo.dto.VotosDTO;
 import com.valts.ob_forum_demo.models.Voto;
 import com.valts.ob_forum_demo.models.VotoPregunta;
 import com.valts.ob_forum_demo.models.VotoRespuesta;
@@ -46,21 +45,40 @@ public class VotoController {
     }
 
     @PostMapping("/foro/votos")
-    public ResponseEntity<Voto> addVoto(@RequestParam String idType, @RequestBody VotoDTO votoDTO) {
-        System.out.println(votoDTO);
-        if (idType.equals("respuestaId")) {
-            Voto addedVoto = votoService.addOne(votoDTO);
-            return ResponseEntity.ok(addedVoto);
+    public ResponseEntity<Voto> addVoto(@RequestParam(required = false) Long preguntaId, @RequestParam(required = false) Long respuestaId, @RequestBody VotoDTO voto) {
+        if (preguntaId == null && respuestaId == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            if (preguntaId != null && respuestaId != null) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            if (respuestaId != null) {
+                Voto addedVoto = votoService.addVotoRespuesta(respuestaId, voto);
+                return ResponseEntity.ok(addedVoto);
         }
-        if(idType.equals("preguntaId")) {
-            Voto addedVoto = votoService.addOne(votoDTO);
-            return ResponseEntity.ok(addedVoto);
+            if(preguntaId != null) {
+                Voto addedVoto = votoService.addVotoPregunta(preguntaId, voto);
+                return ResponseEntity.ok(addedVoto);
         }
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/foro/lolz")
-    public void getLolz() {
-        votoService.getVotosByRespuestaId(1L);
+    @PutMapping("foro/votos/{id}")
+    public ResponseEntity<Voto> updateVoto(@PathVariable Long id) {
+        Voto voto = votoService.updateOne(id);
+        return ResponseEntity.ok(voto);
+    }
+
+    @DeleteMapping("foro/votos/{id}")
+    public ResponseEntity deleteVoto(@PathVariable Long id) {
+        votoService.deleteOne(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("foro/votos")
+    public ResponseEntity deleteAll() {
+        votoService.deleteAll();
+        return ResponseEntity.ok().build();
     }
 }

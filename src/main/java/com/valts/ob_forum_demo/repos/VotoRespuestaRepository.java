@@ -12,7 +12,10 @@ import java.util.List;
 @Repository
 public interface VotoRespuestaRepository extends VotoBaseRepository<VotoRespuesta> {
 
-    List<VotoRespuesta> findAllByRespuesta_Id(Long id);
+//    PROBS SAFE TO DELETE
+
+
+//    List<VotoRespuesta> findAllByRespuesta_Id(Long id);
 
     Integer countByVoto(boolean b);
 

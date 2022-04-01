@@ -13,4 +13,6 @@ public interface TemaRepository extends JpaRepository<Tema, Long> {
     List<Tema> findByCursoId(Long id);
 
     List<Tema> findByCursoIdAndModuloIdIn(Long id, Collection<Long> modulos);
+
+    List<Tema> findAllByOrderByIsPinnedDesc();
 }

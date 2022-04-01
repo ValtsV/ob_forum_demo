@@ -6,6 +6,7 @@ import com.valts.ob_forum_demo.models.Pregunta;
 import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.repos.TemaRepository;
 import com.valts.ob_forum_demo.servicios.TemaService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class TemaServiceImpl implements TemaService {
 
     @Override
     public List<Tema> findAll() {
-        return temaRepo.findAll();
+        return temaRepo.findAllByOrderByIsPinnedDesc();
     }
 
     @Override

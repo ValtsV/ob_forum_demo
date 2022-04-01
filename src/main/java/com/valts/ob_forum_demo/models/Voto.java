@@ -1,7 +1,6 @@
 package com.valts.ob_forum_demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,8 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+
+
 public abstract class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

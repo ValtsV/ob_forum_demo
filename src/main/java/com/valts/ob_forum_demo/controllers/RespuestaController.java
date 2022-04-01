@@ -1,9 +1,7 @@
 package com.valts.ob_forum_demo.controllers;
 
 import com.valts.ob_forum_demo.dto.RespuestaWithUserAndVotosDTO;
-import com.valts.ob_forum_demo.models.Pregunta;
 import com.valts.ob_forum_demo.models.Respuesta;
-import com.valts.ob_forum_demo.servicios.RespuestaService;
 import com.valts.ob_forum_demo.servicios.implementations.RespuestaServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +18,8 @@ public class RespuestaController {
     }
 
     @GetMapping("/foro/respuestas")
-    public ResponseEntity<List<RespuestaWithUserAndVotosDTO>> getAll(@RequestParam Long preguntaId) {
-        List<RespuestaWithUserAndVotosDTO> respuestas = respuestaService.findAll(preguntaId);
+    public ResponseEntity<List<RespuestaWithUserAndVotosDTO>> getAll(@RequestParam Long preguntaId, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
+        List<RespuestaWithUserAndVotosDTO> respuestas = respuestaService.findAll(preguntaId, sort, order);
         return ResponseEntity.ok(respuestas);
     }
 
@@ -33,8 +31,8 @@ public class RespuestaController {
 
 
     @PostMapping("/foro/respuestas")
-    public ResponseEntity<Respuesta> addOne(@RequestBody Respuesta respuesta) {
-        Respuesta newRespuesta =  respuestaService.addOne(respuesta);
+    public ResponseEntity<Respuesta> addOne(@RequestParam Long preguntaId, @RequestBody Respuesta respuesta) {
+        Respuesta newRespuesta =  respuestaService.addOne(preguntaId, respuesta);
         return ResponseEntity.ok(newRespuesta);
     }
 

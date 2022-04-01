@@ -7,11 +7,11 @@ import com.valts.ob_forum_demo.models.Respuesta;
 import java.util.List;
 
 public interface RespuestaService {
-    List<RespuestaWithUserAndVotosDTO> findAll(Long preguntaId);
+    List<RespuestaWithUserAndVotosDTO> findAll(Long preguntaId, String s, String o);
 
     RespuestaWithUserAndVotosDTO findOne(Long id);
 
-    Respuesta addOne(Respuesta respuesta);
+    Respuesta addOne(Long id, Respuesta respuesta);
 
     Respuesta updateOne(Long id, Respuesta respuesta);
 

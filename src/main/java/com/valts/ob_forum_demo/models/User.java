@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 //Lombok
 @NoArgsConstructor
@@ -22,7 +24,15 @@ public class User {
     private String password;
     private String email;
     private String avatar;
-    private Enum role; //??
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -67,12 +77,11 @@ public class User {
         @JsonIgnore
         private List<Curso> attendedCursos;
 
-    public User(Long id, String username, String password, String email, String avatar, Enum role) {
+    public User(Long id, String username, String password, String email, String avatar) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.avatar = avatar;
-        this.role = role;
     }
 }

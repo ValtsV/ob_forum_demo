@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface VotoPreguntaRepository extends VotoBaseRepository<VotoPregunta> {
 
-    List<VotoPregunta> findAllByPregunta_Id(Long id);
+//    PROBS SAFE TO DELETE
+
+//    List<VotoPregunta> findAllByPregunta_Id(Long id);
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Respuesta {
     @Column(name = "respuesta_text")
     private String respuestaText;
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "is_pinned")
     private boolean isPinned;
 
@@ -36,10 +37,10 @@ public class Respuesta {
     @ManyToOne()
     private User user;
 
-    @OneToMany(mappedBy = "respuesta")
+    @OneToMany(mappedBy = "respuesta", orphanRemoval = true)
     private List<VotoRespuesta> votosRespuesta;
 
-    public Respuesta(Long id, String respuestaText, LocalDate createdAt, boolean isPinned) {
+    public Respuesta(Long id, String respuestaText, LocalDateTime createdAt, boolean isPinned) {
         this.id = id;
         this.respuestaText = respuestaText;
         this.createdAt = createdAt;
