@@ -6,7 +6,7 @@ import com.valts.ob_forum_demo.models.Pregunta;
 import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.repos.TemaRepository;
 import com.valts.ob_forum_demo.servicios.TemaService;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class TemaServiceImpl implements TemaService {
 
+    @Autowired
     TemaRepository temaRepo;
-
-    public TemaServiceImpl(TemaRepository temaRepo) {
-        this.temaRepo = temaRepo;
-    }
 
     @Override
     public List<Tema> findAll() {
@@ -39,16 +36,19 @@ public class TemaServiceImpl implements TemaService {
 
     @Override
     public Tema addTema(Tema tema) {
-        Tema savedTema = temaRepo.save(tema);
-        return savedTema;
+        return temaRepo.save(tema);
     }
 
     @Override
     public Tema updateTema(Long id, Tema tema) {
-        Optional<Tema> temaOpt = temaRepo.findById(id);
-        if (temaOpt.isPresent()) {
-            tema.setId(id);
-            return temaRepo.save(tema);
+        Optional<Tema> temaOptional = temaRepo.findById(id);
+        if (temaOptional.isPresent()) {
+            Tema newTema = temaOptional.get();
+
+            newTema.setTitle(tema.getTitle());
+            newTema.setDescription(tema.getDescription());
+
+            return temaRepo.save(newTema);
 
         }
         return null;
@@ -56,8 +56,8 @@ public class TemaServiceImpl implements TemaService {
 
     @Override
     public void deleteTema(Long id) {
-        Optional<Tema> temaOpt = temaRepo.findById(id);
-        if (temaOpt.isPresent()) {
+        Optional<Tema> temaOptional = temaRepo.findById(id);
+        if (temaOptional.isPresent()) {
             temaRepo.deleteById(id);
         }
     }
@@ -68,17 +68,16 @@ public class TemaServiceImpl implements TemaService {
     }
 
     @Override
-    public TemaDTO getTemaDto(Long id) {
-        Optional<Tema> temaOpt =  temaRepo.findById(id);
-        if (temaOpt.isPresent()) {
-            TemaDTO temaDto = convertTemaDTO(temaOpt.get());
-            return temaDto;
+    public TemaDTO getTemaById(Long id) {
+        Optional<Tema> temaOptional =  temaRepo.findById(id);
+        if (temaOptional.isPresent()) {
+            return convertTemaDTO(temaOptional.get());
         }
         return null;
     }
 
 
-    public TemaDTO convertTemaDTO(Tema tema) {
+    private TemaDTO convertTemaDTO(Tema tema) {
         TemaDTO temaDto = new TemaDTO();
         temaDto.setId(tema.getId());
         temaDto.setTitle(tema.getTitle());
@@ -87,7 +86,7 @@ public class TemaServiceImpl implements TemaService {
 
 //        temadto set listofpreguntaDtos
         List<Pregunta> preguntas = tema.getPreguntas();
-        List<PreguntaDTO> preguntasDto = preguntas.stream().map(pregunta -> convertPreguntaDTO(pregunta)).collect(Collectors.toList());
+        List<PreguntaDTO> preguntasDto = preguntas.stream().map(this::convertPreguntaDTO).collect(Collectors.toList());
 
 
         temaDto.setPreguntas(preguntasDto);
@@ -107,7 +106,7 @@ public class TemaServiceImpl implements TemaService {
     }
 
     @Override
-    public List<Tema> getTemasFiltered(Long cursoId, List<Long> moduloId) {
+    public List<Tema> getTemasFilteredBy(Long cursoId, List<Long> moduloId) {
         if (moduloId == null) {
             return temaRepo.findByCursoId(cursoId);
         }

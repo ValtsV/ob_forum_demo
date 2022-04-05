@@ -1,6 +1,6 @@
 package com.valts.ob_forum_demo.controllers;
 
-import com.valts.ob_forum_demo.dto.RespuestaWithUserAndVotosDTO;
+import com.valts.ob_forum_demo.dto.RespuestaDTO;
 import com.valts.ob_forum_demo.models.Respuesta;
 import com.valts.ob_forum_demo.servicios.implementations.RespuestaServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ public class RespuestaController {
     }
 
     @GetMapping("/foro/respuestas")
-    public ResponseEntity<List<RespuestaWithUserAndVotosDTO>> getAll(@RequestParam Long preguntaId, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
-        List<RespuestaWithUserAndVotosDTO> respuestas = respuestaService.findAll(preguntaId, sort, order);
+    public ResponseEntity<List<RespuestaDTO>> getAll(@RequestParam Long preguntaId, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
+        List<RespuestaDTO> respuestas = respuestaService.findAll(preguntaId, sort, order);
         return ResponseEntity.ok(respuestas);
     }
 
     @GetMapping("/foro/respuestas/{id}")
-    public ResponseEntity<RespuestaWithUserAndVotosDTO> getOne(@PathVariable Long id) {
-        RespuestaWithUserAndVotosDTO respuesta = respuestaService.findOne(id);
+    public ResponseEntity<RespuestaDTO> getOne(@PathVariable Long id) {
+        RespuestaDTO respuesta = respuestaService.findOne(id);
         return ResponseEntity.ok(respuesta);
     }
 

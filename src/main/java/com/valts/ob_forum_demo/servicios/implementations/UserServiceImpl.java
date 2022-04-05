@@ -1,11 +1,11 @@
 package com.valts.ob_forum_demo.servicios.implementations;
 
 import com.valts.ob_forum_demo.models.Curso;
-import com.valts.ob_forum_demo.models.Role;
 import com.valts.ob_forum_demo.models.User;
 import com.valts.ob_forum_demo.repos.CursoRepository;
 import com.valts.ob_forum_demo.repos.UserRepository;
 import com.valts.ob_forum_demo.servicios.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,13 +13,12 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepo;
+
+    @Autowired
     private CursoRepository cursoRepo; // TODO: gotta go aswell
 
-    public UserServiceImpl(UserRepository userRepo, CursoRepository cursoRepo) {
-        this.userRepo = userRepo;
-        this.cursoRepo = cursoRepo;
-    }
 
 
 //    User save method / gets userdto passed
@@ -85,8 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addOne(User user) {
-        User savedUser = userRepo.save(user);
-        return savedUser;
+        return userRepo.save(user);
     }
 
     @Override

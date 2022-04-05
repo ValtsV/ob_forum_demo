@@ -27,17 +27,13 @@ public class VotoServiceImpl implements VotoService {
     @Override
     public List<VotoPregunta> findAllByPreguntaId(Long id) {
 
-        List<VotoPregunta> votos =  votoRepo.findAllByPregunta_Id(id);
-
-        return votos;
+        return votoRepo.findAllByPregunta_Id(id);
     }
 
     @Override
     public List<VotoRespuesta> findAllByRespuestaId(Long id) {
 
-        List<VotoRespuesta> votos =  votoRepo.findAllByRespuesta_Id(id);
-
-        return votos;
+        return votoRepo.findAllByRespuesta_Id(id);
     }
 
     @Override
@@ -46,11 +42,9 @@ public class VotoServiceImpl implements VotoService {
         if (votoOptional.isPresent()) {
             Voto voto = votoOptional.get();
             if (voto instanceof VotoRespuesta) {
-                VotoRespuesta votoRespuesta = (VotoRespuesta) voto;
-                return votoRespuesta;
+                return voto;
             }
-            VotoPregunta votoPregunta = (VotoPregunta) voto;
-            return votoPregunta;
+            return voto;
         }
         return null;
     }
@@ -65,9 +59,8 @@ public class VotoServiceImpl implements VotoService {
             votoRespuesta.setVoto(voto.isVoto());
 //            set user form token or smth
         }
-        Voto savedVoto = votoRepo.save(votoRespuesta);
 
-        return savedVoto;
+        return votoRepo.save(votoRespuesta);
     }
 
     @Override
@@ -79,9 +72,8 @@ public class VotoServiceImpl implements VotoService {
             votoPregunta.setVoto(voto.isVoto());
 //            set user from token or smth
         }
-        Voto savedVoto = votoRepo.save(votoPregunta);
 
-        return savedVoto;
+        return votoRepo.save(votoPregunta);
     }
 
 
@@ -89,18 +81,20 @@ public class VotoServiceImpl implements VotoService {
     @Override
     public Voto updateOne(Long id) {
         Optional<Voto> votoOptional = votoRepo.findById(id);
-        Voto voto = votoOptional.get();
-        if (voto instanceof VotoRespuesta) {
-            VotoRespuesta votoRespuesta = (VotoRespuesta) voto;
-            votoRespuesta.setVoto(!voto.isVoto());
-            voto = votoRepo.save(votoRespuesta);
-        } else {
-            VotoPregunta votoPregunta = (VotoPregunta) voto;
-            votoPregunta.setVoto(!voto.isVoto());
-            voto = votoRepo.save(votoPregunta);
-        }
+        if (votoOptional.isPresent()){
+            Voto voto = votoOptional.get();
+            if (voto instanceof VotoRespuesta votoRespuesta) {
+                votoRespuesta.setVoto(!voto.isVoto());
+                voto = votoRepo.save(votoRespuesta);
+            } else {
+                VotoPregunta votoPregunta = (VotoPregunta) voto;
+                votoPregunta.setVoto(!voto.isVoto());
+                voto = votoRepo.save(votoPregunta);
+            }
 
-        return voto;
+            return voto;
+        }
+        return null;
     }
 
     @Override

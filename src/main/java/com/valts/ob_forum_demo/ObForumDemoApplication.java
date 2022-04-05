@@ -2,21 +2,12 @@ package com.valts.ob_forum_demo;
 
 import com.valts.ob_forum_demo.models.*;
 import com.valts.ob_forum_demo.repos.*;
-import com.valts.ob_forum_demo.servicios.UserService;
-import com.valts.ob_forum_demo.servicios.implementations.UserServiceImpl;
-import com.valts.ob_forum_demo.servicios.implementations.VotoServiceImpl;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.jpa.provider.HibernateUtils;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -36,6 +27,22 @@ public class ObForumDemoApplication {
 		VotoRespuestaRepository votoRespuestaRepository = ctx.getBean(VotoRespuestaRepository.class);
 		VotoRepository votoRepo = ctx.getBean(VotoRepository.class);
 
+		User user1 = new User(null, "username1", "password1", "mail1@mail.com", "avatar");
+		User user2 = new User(null, "username2", "password2", "mail2@mail.com", "avatar");
+		User user3 = new User(null, "username1", "psw", "mail", null);
+		User user4 = new User(null, "username1", "psw", "mail", null);
+		User user5 = new User(null, "username1", "psw", "mail", null);
+		User user6 = new User(null, "username1", "psw", "mail", null);
+		User user7 = new User(null, "username1", "psw", "mail", null);
+		User user8 = new User(null, "username1", "psw", "mail", null);
+		User user9 = new User(null, "username1", "psw", "mail", null);
+		User user10 = new User(null, "username1", "psw", "mail", null);
+		User user11 = new User(null, "username1", "psw", "mail", null);
+		User user12 = new User(null, "username1", "psw", "mail", null);
+		User user13 = new User(null, "username1", "psw", "mail", null);
+		User user14 = new User(null, "username1", "psw", "mail", null);
+		User user15 = new User(null, "username1", "psw", "mail", null);
+		User user16 = new User(null, "username1", "psw", "mail", null);
 
 
 		VotoPregunta votoPregunta1 = new VotoPregunta(null, true);
@@ -95,6 +102,26 @@ public class ObForumDemoApplication {
 		votoRespuesta11.setRespuesta(respuesta1);
 		votoRespuesta12.setRespuesta(respuesta1);
 
+		votoPregunta1.setUser(user1);
+		votoPregunta2.setUser(user2);
+		votoPregunta3.setUser(user3);
+		votoPregunta4.setUser(user4);
+		votoPregunta5.setUser(user5);
+		votoPregunta6.setUser(user6);
+
+		votoRespuesta1.setUser(user3);
+		votoRespuesta2.setUser(user4);
+		votoRespuesta3.setUser(user5);
+		votoRespuesta4.setUser(user6);
+		votoRespuesta5.setUser(user7);
+		votoRespuesta6.setUser(user8);
+		votoRespuesta7.setUser(user9);
+		votoRespuesta8.setUser(user10);
+		votoRespuesta9.setUser(user11);
+		votoRespuesta10.setUser(user12);
+		votoRespuesta11.setUser(user13);
+		votoRespuesta12.setUser(user15);
+
 		List<Voto> wowList = new ArrayList<>();
 
 		wowList.add(votoPregunta1);
@@ -103,11 +130,23 @@ public class ObForumDemoApplication {
 		Curso curso1 = new Curso(null, "React", null);
 		Curso curso2 = new Curso(null, "Angular", null);
 
-		User user1 = new User(null, "username1", "password1", "mail1@mail.com", "avatar");
-		User user2 = new User(null, "username2", "password2", "mail2@mail.com", "avatar");
 
 		userRepo.save(user1);
 		userRepo.save(user2);
+		userRepo.save(user3);
+		userRepo.save(user4);
+		userRepo.save(user5);
+		userRepo.save(user6);
+		userRepo.save(user7);
+		userRepo.save(user8);
+		userRepo.save(user9);
+		userRepo.save(user10);
+		userRepo.save(user11);
+		userRepo.save(user12);
+		userRepo.save(user13);
+		userRepo.save(user14);
+		userRepo.save(user15);
+		userRepo.save(user16);
 
 		respuesta1.setUser(user1);
 		respuesta2.setUser(user2);
@@ -243,25 +282,6 @@ public class ObForumDemoApplication {
 		votoRepo.save(votoRespuesta12);
 
 
-
-
-		UserServiceImpl serv = new UserServiceImpl(userRepo, cursoRepo);
-
-		serv.enrollInCurso(1L, 1L);
-
-
-//		VotoServiceImpl servV = new VotoServiceImpl(votoRepo);
-//		servV.addOne(votoPregunta1);
-//		Curso curso = cursoRepo.getById(1L);
-//
-//		System.out.println(curso);
-//		User user = userRepo.getById(1L);
-//		System.out.println(user);
-//		user.getAttendedCursos().add(curso);
-//		curso.getEnrolledUsers().add(user);
-//		curso.getEnrolledUsers();
-//		cursoRepo.save(curso);
-//		Pregunta pregunta = new Pregunta(null, "pregunta title", "pregunta description", LocalDate.now(), )
 	}
 
 

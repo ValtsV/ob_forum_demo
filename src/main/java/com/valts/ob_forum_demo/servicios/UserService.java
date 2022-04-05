@@ -1,6 +1,5 @@
 package com.valts.ob_forum_demo.servicios;
 
-import com.valts.ob_forum_demo.models.Respuesta;
 import com.valts.ob_forum_demo.models.User;
 
 import java.util.List;

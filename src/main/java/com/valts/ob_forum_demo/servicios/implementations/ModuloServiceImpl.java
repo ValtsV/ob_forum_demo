@@ -3,6 +3,7 @@ package com.valts.ob_forum_demo.servicios.implementations;
 import com.valts.ob_forum_demo.models.Modulo;
 import com.valts.ob_forum_demo.repos.ModuloRepository;
 import com.valts.ob_forum_demo.servicios.ModuloService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +12,8 @@ import java.util.Optional;
 @Service
 public class ModuloServiceImpl implements ModuloService {
 
+    @Autowired
     ModuloRepository moduloRepo;
-
-    public ModuloServiceImpl(ModuloRepository moduloRepository) {
-        this.moduloRepo = moduloRepository;
-    }
 
     @Override
     public List<Modulo> findAll() {
@@ -34,8 +32,7 @@ public class ModuloServiceImpl implements ModuloService {
 
     @Override
     public Modulo addModulo(Modulo modulo) {
-        Modulo savedModulo = moduloRepo.save(modulo);
-        return savedModulo;
+        return moduloRepo.save(modulo);
     }
 
     @Override

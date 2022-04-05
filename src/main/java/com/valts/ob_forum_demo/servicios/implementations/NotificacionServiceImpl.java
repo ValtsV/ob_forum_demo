@@ -1,24 +1,19 @@
 package com.valts.ob_forum_demo.servicios.implementations;
 
-import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.models.Notificacion;
-import com.valts.ob_forum_demo.repos.CursoRepository;
 import com.valts.ob_forum_demo.repos.NotificacionRepository;
-import com.valts.ob_forum_demo.repos.TemaRepository;
 import com.valts.ob_forum_demo.servicios.NotificacionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotificacionServiceImpl implements NotificacionService {
 
+    @Autowired
     private NotificacionRepository notificacionRepo;
 
-    public NotificacionServiceImpl(NotificacionRepository notificacionRepo) {
-        this.notificacionRepo = notificacionRepo;
-    }
 
     @Override
     public List<Notificacion> findAll() {

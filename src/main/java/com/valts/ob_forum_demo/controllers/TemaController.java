@@ -18,6 +18,31 @@ public class TemaController {
     }
 
 
+    @GetMapping("/foro/temas/{id}")
+    public ResponseEntity<TemaDTO> getTema(@PathVariable Long id) {
+//        TODO: Only admins can see if Tema is pinned?
+        TemaDTO tema = temaService.getTemaById(id);
+        return ResponseEntity.ok(tema);
+    }
+
+
+    @GetMapping("/foro/temas")
+    public ResponseEntity<List<Tema>> getTemas(@RequestParam(required = false) Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
+//        TODO: Add access modifiers
+//        TODO: Sort by pinned first
+        //        get list of all temas from service
+        if (cursoId == null && moduloId == null) {
+            List<Tema> temas = temaService.findAll();
+            return ResponseEntity.ok(temas);
+        }
+//        gets list of temas where cursoID, moduloId matches
+        if (cursoId != null) {
+            List<Tema> temas = temaService.getTemasFilteredBy(cursoId, moduloId);
+            return ResponseEntity.ok(temas);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/foro/temas")
     public ResponseEntity<Tema> addTema(@RequestBody Tema tema) {
         Tema savedTema =  temaService.addTema(tema);
@@ -42,29 +67,8 @@ public class TemaController {
         return ResponseEntity.noContent().build();
     }
 
-//    --------  DTO stuff
-
-    @GetMapping("/foro/temas/{id}")
-    public ResponseEntity<TemaDTO> getTema(@PathVariable Long id) {
-//        TODO: Only admins can see if Tema is pinned?
-        TemaDTO tema = temaService.getTemaDto(id);
-        return ResponseEntity.ok(tema);
-    }
 
 
-    @GetMapping("/foro/temas")
-    public ResponseEntity<List<Tema>> getTemas(@RequestParam(required = false) Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
-//        TODO: Add access modifiers
-//        TODO: Sort by pinned first
-        //        get list of all temas from service
-        if (cursoId == null && moduloId == null) {
-            List<Tema> temas = temaService.findAll();
-            return ResponseEntity.ok(temas);
-        }
-//        gets list of temas where cursoID, moduloId matches
-        List<Tema> temas = temaService.getTemasFiltered(cursoId, moduloId);
-        return ResponseEntity.ok(temas);
-    }
 
 
 }

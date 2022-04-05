@@ -1,7 +1,5 @@
 package com.valts.ob_forum_demo.dto;
 
-
-import com.valts.ob_forum_demo.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

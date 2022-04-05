@@ -3,6 +3,7 @@ package com.valts.ob_forum_demo.servicios.implementations;
 import com.valts.ob_forum_demo.models.Curso;
 import com.valts.ob_forum_demo.repos.CursoRepository;
 import com.valts.ob_forum_demo.servicios.CursoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +12,9 @@ import java.util.Optional;
 @Service
 public class CursoServiceImpl implements CursoService {
 
+    @Autowired
     private CursoRepository cursoRepo;
 
-    public CursoServiceImpl(CursoRepository cursoRepo) {
-        this.cursoRepo = cursoRepo;
-    }
 
     @Override
     public List<Curso> findAll() {
@@ -34,14 +33,12 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     public Curso addCurso(Curso curso) {
-        Curso savedCurso = cursoRepo.save(curso);
-        return savedCurso;
+        return cursoRepo.save(curso);
     }
 
     @Override
     public Curso updateCurso(Long id, Curso cursoNew) {
         Optional<Curso> cursoOpt = cursoRepo.findById(id);
-        System.out.println(cursoOpt.get());
         if (cursoOpt.isPresent()) {
                 cursoNew.setId(id);
                 return cursoRepo.save(cursoNew);

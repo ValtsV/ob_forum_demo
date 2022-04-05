@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -19,5 +18,9 @@ public class PreguntaDTO {
     private String description;
     private LocalDateTime createdAt;
     private boolean isPinned;
+    private Long temaId;
+    private UserDTO user;
+    private Long totalVotosPositivos;
+    private Long totalVotosNegativos;
     private Integer totalRespuestas;
 }

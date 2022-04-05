@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 //Lombok
@@ -38,6 +36,7 @@ public class Respuesta {
     private User user;
 
     @OneToMany(mappedBy = "respuesta", orphanRemoval = true)
+    @JsonIgnore
     private List<VotoRespuesta> votosRespuesta;
 
     public Respuesta(Long id, String respuestaText, LocalDateTime createdAt, boolean isPinned) {

@@ -2,16 +2,14 @@ package com.valts.ob_forum_demo.servicios.implementations;
 
 
 import com.valts.ob_forum_demo.dto.*;
-import com.valts.ob_forum_demo.models.Pregunta;
-import com.valts.ob_forum_demo.models.Respuesta;
-import com.valts.ob_forum_demo.models.Tema;
-import com.valts.ob_forum_demo.models.VotoRespuesta;
+import com.valts.ob_forum_demo.models.*;
 import com.valts.ob_forum_demo.repos.PreguntaRepository;
+import com.valts.ob_forum_demo.repos.RespuestaRepository;
 import com.valts.ob_forum_demo.servicios.PreguntaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -21,28 +19,83 @@ import java.util.Optional;
 @Service
 public class PreguntaServiceImpl implements PreguntaService {
 
+    @Autowired
     private PreguntaRepository preguntaRepo;
 
-//    @Autowired
-//    private RespuestaServiceImpl respuestaService;
+    @Autowired
+    @Lazy //avoid circular, check if better option is available
+    private RespuestaServiceImpl respuestaService;
+
+    @Autowired
+    private RespuestaRepository respuestaRepo;
 
     @Autowired
     private TemaServiceImpl temaService;
 
-//    public PreguntaServiceImpl(PreguntaRepository preguntaRepo, RespuestaServiceImpl respuestaService) {
-//        this.preguntaRepo = preguntaRepo;
-//        this.respuestaService = respuestaService;
-//    }
 
 
-    public PreguntaServiceImpl(PreguntaRepository preguntaRepo) {
-        this.preguntaRepo = preguntaRepo;
+
+    @Override
+    public List<PreguntaDTO> findAll() {
+//        List<PreguntaDTOi> preguntaDTOiList = preguntaRepo.findPreguntasUsersVotosOrderedByIsPinned();
+        List<PreguntaDTOi> preguntaDTOiList = preguntaRepo.findPreguntasUsersVotosOrderedByIsPinned();
+        List<PreguntaDTO> preguntaDTOList = new ArrayList<>();
+
+        preguntaDTOiList.forEach(pregunta -> {
+            PreguntaDTO preguntaDTO = new PreguntaDTO();
+            UserDTO userDTO = new UserDTO();
+
+            preguntaDTO.setId(pregunta.getId());
+            preguntaDTO.setCreatedAt(pregunta.getCreatedAt());
+            preguntaDTO.setPinned(pregunta.getIsPinned());
+            preguntaDTO.setDescription(pregunta.getDescription());
+            preguntaDTO.setTitle(pregunta.getTitle());
+            preguntaDTO.setTemaId(pregunta.getTemaId());
+            preguntaDTO.setTotalVotosPositivos(pregunta.getTotalVotosPositivos());
+            preguntaDTO.setTotalVotosNegativos(pregunta.getTotalVotosNegativos());
+            preguntaDTO.setTotalRespuestas(pregunta.getTotalRespuestas());
+
+            userDTO.setId(pregunta.getUserId());
+            userDTO.setUsername(pregunta.getUserUsername());
+            userDTO.setAvatar(pregunta.getUserAvatar());
+            preguntaDTO.setUser(userDTO);
+
+            preguntaDTOList.add(preguntaDTO);
+        });
+
+        return preguntaDTOList;
     }
 
     @Override
-    public List<Pregunta> findAll() {
-        return preguntaRepo.findAllByOrderByIsPinnedDesc();
+    public List<PreguntaDTO> findAllByTemaId(Long id) {
+        List<PreguntaDTOi> preguntaDTOiList = preguntaRepo.findPreguntasUsersVotosByTemaIdOrderedByIsPinned(id);
+        List<PreguntaDTO> preguntaDTOList = new ArrayList<>();
+
+        preguntaDTOiList.forEach(pregunta -> {
+            PreguntaDTO preguntaDTO = new PreguntaDTO();
+            UserDTO userDTO = new UserDTO();
+
+            preguntaDTO.setId(pregunta.getId());
+            preguntaDTO.setCreatedAt(pregunta.getCreatedAt());
+            preguntaDTO.setPinned(pregunta.getIsPinned());
+            preguntaDTO.setDescription(pregunta.getDescription());
+            preguntaDTO.setTitle(pregunta.getTitle());
+            preguntaDTO.setTemaId(pregunta.getTemaId());
+            preguntaDTO.setTotalVotosNegativos(pregunta.getTotalVotosNegativos());
+            preguntaDTO.setTotalVotosPositivos(pregunta.getTotalVotosPositivos());
+            preguntaDTO.setTotalRespuestas(pregunta.getTotalRespuestas());
+
+            userDTO.setId(pregunta.getUserId());
+            userDTO.setUsername(pregunta.getUserUsername());
+            userDTO.setAvatar(pregunta.getUserAvatar());
+            preguntaDTO.setUser(userDTO);
+
+            preguntaDTOList.add(preguntaDTO);
+        });
+
+        return preguntaDTOList;
     }
+
 
     @Override
     public Pregunta findOne(Long id) {
@@ -55,14 +108,48 @@ public class PreguntaServiceImpl implements PreguntaService {
         return null;
     }
 
+
+    @Override
+    public PreguntaRespuestaDTO findPreguntaRespuestaDTO(Long id) {
+        Optional<PreguntaDTOi> preguntaOpt = preguntaRepo.findPreguntaUserTotalVotosByPreguntaId(id);
+        if (preguntaOpt.isPresent()) {
+            PreguntaDTOi preguntaDTOi = preguntaOpt.get();
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(preguntaDTOi.getUserId());
+            userDTO.setUsername(preguntaDTOi.getUserUsername());
+            userDTO.setAvatar(preguntaDTOi.getUserAvatar());
+
+            PreguntaRespuestaDTO preguntaRespuestaDTO = new PreguntaRespuestaDTO();
+            preguntaRespuestaDTO.setId(preguntaDTOi.getId());
+            preguntaRespuestaDTO.setCreatedAt(preguntaDTOi.getCreatedAt());
+            preguntaRespuestaDTO.setTitle(preguntaDTOi.getTitle());
+            preguntaRespuestaDTO.setDescription(preguntaDTOi.getDescription());
+            preguntaRespuestaDTO.setPinned(preguntaDTOi.getIsPinned());
+            preguntaRespuestaDTO.setTemaId(preguntaDTOi.getTemaId());
+            preguntaRespuestaDTO.setTotalVotosNegativos(preguntaDTOi.getTotalVotosNegativos());
+            preguntaRespuestaDTO.setTotalVotosPositivos(preguntaDTOi.getTotalVotosPositivos());
+            preguntaRespuestaDTO.setTotalRespuestas(preguntaDTOi.getTotalRespuestas()); ////??????
+
+            List<RespuestaDTO> respuestas =  respuestaService.findAll(id, null, null);
+
+            preguntaRespuestaDTO.setRespuestas(respuestas);
+
+            return preguntaRespuestaDTO;
+        }
+
+
+        return null;
+    }
+
+
     @Override
     public Pregunta addOne(Pregunta pregunta, Long temaId) {
             pregunta.setCreatedAt(LocalDateTime.now());
 //        pregunta.setUser(); get from token i guess
         Tema tema = temaService.findOne(temaId); //throws error if null?
         pregunta.setTema(tema);
-        Pregunta newPregunta = preguntaRepo.save(pregunta);
-        return newPregunta;
+        return preguntaRepo.save(pregunta);
     }
 
     @Override
@@ -93,116 +180,4 @@ public class PreguntaServiceImpl implements PreguntaService {
         preguntaRepo.deleteAll();
     }
 
-//    Some DTO YOLO
-    @Override
-    public List<PreguntaWithUserDTO> getPreguntas() {
-
-        List<Pregunta> preguntas = preguntaRepo.findAllByOrderByIsPinnedDesc();
-        List<PreguntaWithUserDTO> preguntasDto = new ArrayList<>();
-        preguntas.forEach(pregunta -> {
-            UserDTO userDto = new UserDTO();
-            PreguntaWithUserDTO preguntaWithUserDto = new PreguntaWithUserDTO();
-
-            preguntaWithUserDto.setId(pregunta.getId());
-            preguntaWithUserDto.setTitle(pregunta.getTitle());
-            preguntaWithUserDto.setDescription(pregunta.getDescription());
-            preguntaWithUserDto.setCreatedAt(pregunta.getCreatedAt());
-            preguntaWithUserDto.setPinned(pregunta.isPinned());
-            preguntaWithUserDto.setTotalRespuestas(pregunta.getRespuestas().size());
-
-            userDto.setId(pregunta.getUser().getId());
-            userDto.setUsername(pregunta.getUser().getUsername());
-            userDto.setAvatar(pregunta.getUser().getAvatar());
-            preguntaWithUserDto.setUser(userDto);
-
-            preguntasDto.add(preguntaWithUserDto);
-        });
-
-        return preguntasDto;
-    }
-
-
-    @Override
-    public PreguntaAndRespuestaUserVotosDTO getPreguntasById(Long id) {
-        Optional<Pregunta> preguntaOptional =  preguntaRepo.findById(id);
-        if (preguntaOptional.isPresent()) {
-            Pregunta pregunta = preguntaOptional.get();
-
-            List<RespuestaWithUserAndVotosDTO> respuestasDTO = new ArrayList<>();
-            PreguntaAndRespuestaUserVotosDTO preguntaAndRespuestaUserVotosDTO = new PreguntaAndRespuestaUserVotosDTO();
-
-            preguntaAndRespuestaUserVotosDTO.setId(pregunta.getId());
-            preguntaAndRespuestaUserVotosDTO.setTitle(pregunta.getTitle());
-            preguntaAndRespuestaUserVotosDTO.setDescription(pregunta.getDescription());
-            preguntaAndRespuestaUserVotosDTO.setCreatedAt(pregunta.getCreatedAt());
-            preguntaAndRespuestaUserVotosDTO.setPinned(pregunta.isPinned());
-            preguntaAndRespuestaUserVotosDTO.setTotalRespuestas(pregunta.getRespuestas().size());
-
-            List<Respuesta> respuestas = pregunta.getRespuestas();
-            respuestas.forEach(respuesta -> {
-                respuestasDTO.add(respuestaDTOConverter(respuesta));
-            });
-
-            preguntaAndRespuestaUserVotosDTO.setRespuestas(respuestasDTO);
-
-
-            return preguntaAndRespuestaUserVotosDTO;
-        }
-
-        return null;
-    }
-
-//    List<Tema> findAllByOrderByIsPinnedDesc();
-
-    @Override
-    public List<PreguntaWithUserDTO> getPreguntasByTemaId(Long id) {
-
-        List<Pregunta> preguntas = preguntaRepo.findAllByTemaIdOrderByIsPinnedDesc(id);
-        List<PreguntaWithUserDTO> preguntasDto = new ArrayList<>();
-        preguntas.forEach(pregunta -> {
-            UserDTO userDto = new UserDTO();
-            PreguntaWithUserDTO preguntaWithUserDto = new PreguntaWithUserDTO();
-
-            preguntaWithUserDto.setId(pregunta.getId());
-            preguntaWithUserDto.setTitle(pregunta.getTitle());
-            preguntaWithUserDto.setDescription(pregunta.getDescription());
-            preguntaWithUserDto.setCreatedAt(pregunta.getCreatedAt());
-            preguntaWithUserDto.setPinned(pregunta.isPinned());
-            preguntaWithUserDto.setTotalRespuestas(pregunta.getRespuestas().size());
-
-            userDto.setId(pregunta.getUser().getId());
-            userDto.setUsername(pregunta.getUser().getUsername());
-            userDto.setAvatar(pregunta.getUser().getAvatar());
-            preguntaWithUserDto.setUser(userDto);
-
-            preguntasDto.add(preguntaWithUserDto);
-        });
-
-        return preguntasDto;
-
-    }
-
-    public RespuestaWithUserAndVotosDTO respuestaDTOConverter(Respuesta respuesta) {
-        UserDTO userDTO = new UserDTO();
-        RespuestaWithUserAndVotosDTO respuestaWithUserAndVotosDTO = new RespuestaWithUserAndVotosDTO();
-        respuestaWithUserAndVotosDTO.setId(respuesta.getId());
-        respuestaWithUserAndVotosDTO.setRespuestaText(respuesta.getRespuestaText());
-        respuestaWithUserAndVotosDTO.setCreatedAt(respuesta.getCreatedAt());
-        respuestaWithUserAndVotosDTO.setPinned(respuesta.isPinned());
-
-        List<VotoRespuesta> votos = respuesta.getVotosRespuesta();
-        Long positiveVotos = votos.stream().filter(voto -> voto.isVoto() == true).count();
-        Long negativeVotos = votos.size() - positiveVotos;
-
-
-        respuestaWithUserAndVotosDTO.setTotalVotosPositivos(positiveVotos);
-        respuestaWithUserAndVotosDTO.setTotalVotosNegativos(negativeVotos);
-
-        userDTO.setId(respuesta.getUser().getId());
-        userDTO.setUsername(respuesta.getUser().getUsername());
-        userDTO.setAvatar(respuesta.getUser().getAvatar());
-
-        respuestaWithUserAndVotosDTO.setUser(userDTO);
-        return  respuestaWithUserAndVotosDTO;
-    }
 }
