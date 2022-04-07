@@ -6,24 +6,43 @@ import com.valts.ob_forum_demo.repos.CursoRepository;
 import com.valts.ob_forum_demo.repos.UserRepository;
 import com.valts.ob_forum_demo.servicios.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private CursoRepository cursoRepo; // TODO: gotta go aswell
 
 
 
+
 //    User save method / gets userdto passed
 //      extract User from User dto
 //      encrypt password, then set password
+
+//    public User registrateNewUser(UserAuthDTO userAuthDTO) {
+////        check if email exists
+//
+//        User user = new User();
+//        user.setEmail(userAuthDTO.getEmail());
+////        encrypt psw
+//        user.setPassword(userAuthDTO.getPassword());
+//        user.setRoles();
+//    }
+
 
 //      Set Role
 //    Role role roleService.findByName("USER");
@@ -125,6 +144,15 @@ public class UserServiceImpl implements UserService {
 
         }
         return null;
+    }
+
+
+//    User Details Service methods
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("El usuario " + email +  " no existe"));
     }
 
 }

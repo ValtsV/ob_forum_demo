@@ -1,9 +1,15 @@
 package com.valts.ob_forum_demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.valts.ob_forum_demo.security.CustomUserDetails;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +20,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements CustomUserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +29,10 @@ public class User {
     private String password;
     private String email;
     private String avatar;
+    private boolean locked = false;
+    private boolean enabled = true; // false if implement email validation
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @ManyToMany
     @JoinTable(
@@ -82,5 +92,35 @@ public class User {
         this.password = password;
         this.email = email;
         this.avatar = avatar;
+    }
+
+    //    UserDetail methods
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
+        return Collections.singletonList(authority);
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
