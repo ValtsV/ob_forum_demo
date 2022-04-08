@@ -8,10 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //Lombok
 @NoArgsConstructor
@@ -31,10 +28,10 @@ public class User implements CustomUserDetails {
     private String avatar;
     private boolean locked = false;
     private boolean enabled = true; // false if implement email validation
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
@@ -68,23 +65,23 @@ public class User implements CustomUserDetails {
     @JsonIgnore
     private List<Pregunta> followedPreguntas;
 
-        @ManyToMany()
-        @JoinTable(
-                name = "temas_followers",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "tema_id")
-        )
-        @JsonIgnore
-        private List<Tema> followedTemas;
+    @ManyToMany()
+    @JoinTable(
+            name = "temas_followers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tema_id")
+    )
+    @JsonIgnore
+    private List<Tema> followedTemas;
 
-        @ManyToMany(fetch = FetchType.EAGER)
-        @JoinTable(
-                name = "cursos_users",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "curso_id")
-        )
-        @JsonIgnore
-        private List<Curso> attendedCursos;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "cursos_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
+    @JsonIgnore
+    private List<Curso> attendedCursos;
 
     public User(Long id, String username, String password, String email, String avatar) {
         this.id = id;
@@ -97,11 +94,15 @@ public class User implements CustomUserDetails {
     //    UserDetail methods
 
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
-        return Collections.singletonList(authority);
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
+
+        return authorities;
     }
+
 
 
     @Override

@@ -1,9 +1,11 @@
 package com.valts.ob_forum_demo.servicios.implementations;
 
 import com.valts.ob_forum_demo.models.Curso;
+import com.valts.ob_forum_demo.models.Role;
 import com.valts.ob_forum_demo.models.User;
 import com.valts.ob_forum_demo.repos.CursoRepository;
 import com.valts.ob_forum_demo.repos.UserRepository;
+import com.valts.ob_forum_demo.servicios.RoleService;
 import com.valts.ob_forum_demo.servicios.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,67 +25,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+
+
     @Autowired
     private CursoRepository cursoRepo; // TODO: gotta go aswell
-
-
-
-
-//    User save method / gets userdto passed
-//      extract User from User dto
-//      encrypt password, then set password
-
-//    public User registrateNewUser(UserAuthDTO userAuthDTO) {
-////        check if email exists
-//
-//        User user = new User();
-//        user.setEmail(userAuthDTO.getEmail());
-////        encrypt psw
-//        user.setPassword(userAuthDTO.getPassword());
-//        user.setRoles();
-//    }
-
-
-//      Set Role
-//    Role role roleService.findByName("USER");
-//    Set<Role> roleSet = new HashSet<>();
-//    roleSet.add(role);
-
-//    if mail is adminmail -> add admin role
-//    if(user.getEmail().split("@")[1].equals("adminmail.com")){
-//        role = roleService.findByName("ADMIN");
-//        roleSet.add(role);
-//    }
-
-//    user.setRoles
-//    save user userrepo
-
-
-
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-//        if(user == null){
-//            throw new UsernameNotFoundException("Invalid username or password.");
-//        }
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
-//    }
-//
-//    private Set<SimpleGrantedAuthority> getAuthority(User user) {
-//        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-//        user.getRoles().forEach(role -> {
-//            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-//        });
-//        return authorities;
-//    }
-//
-//    public List<User> findAll() {
-//        List<User> list = new ArrayList<>();
-//        userRepository.findAll().iterator().forEachRemaining(list::add);
-//        return list;
-//    }
-
-
-
 
     @Override
     public List<User> findAll() {
@@ -154,5 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("El usuario " + email +  " no existe"));
     }
+
+
 
 }

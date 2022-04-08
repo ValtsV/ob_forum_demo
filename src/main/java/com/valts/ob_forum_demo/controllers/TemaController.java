@@ -4,6 +4,7 @@ import com.valts.ob_forum_demo.dto.TemaDTO;
 import com.valts.ob_forum_demo.models.Tema;
 import com.valts.ob_forum_demo.servicios.TemaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class TemaController {
         return ResponseEntity.ok(tema);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/foro/temas")
     public ResponseEntity<List<Tema>> getTemas(@RequestParam(required = false) Long cursoId, @RequestParam(required = false) List<Long> moduloId) {
 //        TODO: Add access modifiers

@@ -23,9 +23,15 @@ public class ObForumDemoApplication {
 		TemaRepository temaRepo = ctx.getBean((TemaRepository.class));
 		PreguntaRepository preguntaRepository = ctx.getBean(PreguntaRepository.class);
 		RespuestaRepository respuestaRepository = ctx.getBean(RespuestaRepository.class);
-		VotoPreguntaRepository votoPreguntaRepository = ctx.getBean(VotoPreguntaRepository.class);
-		VotoRespuestaRepository votoRespuestaRepository = ctx.getBean(VotoRespuestaRepository.class);
 		VotoRepository votoRepo = ctx.getBean(VotoRepository.class);
+		RoleRepository roleRepository = ctx.getBean(RoleRepository.class);
+
+		Role role = new Role(null, "USER");
+		Role role2 = new Role(null, "ADMIN");
+
+		roleRepository.save(role);
+		roleRepository.save(role2);
+
 
 		User user1 = new User(null, "username1", "password1", "mail1@mail.com", "avatar");
 		User user2 = new User(null, "username2", "password2", "mail2@mail.com", "avatar");
