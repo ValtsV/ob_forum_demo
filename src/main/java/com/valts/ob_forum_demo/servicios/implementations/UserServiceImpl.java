@@ -77,19 +77,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 //    TODO: This gotta go
-    public User enrollInCurso(Long userId, Long cursoId) {
-        Optional<Curso> cursoOpt = cursoRepo.findById(cursoId);
-
-        Optional<User> userOpt = userRepo.findById(userId);
-        if (userOpt.isPresent() && cursoOpt.isPresent()) {
-            User user = userOpt.get();
-            Curso curso = cursoOpt.get();
-            user.getAttendedCursos().add(curso);
-            return userRepo.save(user);
-
-        }
-        return null;
-    }
+//    public User enrollInCurso(Long userId, Long cursoId) {
+//        Optional<Curso> cursoOpt = cursoRepo.findById(cursoId);
+//
+//        Optional<User> userOpt = userRepo.findById(userId);
+//        if (userOpt.isPresent() && cursoOpt.isPresent()) {
+//            User user = userOpt.get();
+//            Curso curso = cursoOpt.get();
+//            user.getAttendedCursos().add(curso);
+//            return userRepo.save(user);
+//
+//        }
+//        return null;
+//    }
 
 
 //    User Details Service methods

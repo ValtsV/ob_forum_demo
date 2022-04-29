@@ -22,14 +22,11 @@ public class Modulo {
     @Column(name = "id")
     private Long id;
     private String title;
-    private String description;
 
     @OneToMany(mappedBy = "modulo")
     private List<Tema> temas = new ArrayList<>();
 
-    public Modulo(Long id, String title, String description) {
+    public Modulo(Long id, String title) {
         this.id = id;
-        this.title = title;
-        this.description = description;
     }
 }

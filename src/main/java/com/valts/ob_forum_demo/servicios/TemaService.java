@@ -6,7 +6,7 @@ import com.valts.ob_forum_demo.models.Tema;
 import java.util.List;
 
 public interface TemaService {
-    List<Tema> findAll();
+    List<Tema> findAll(String s);
 
     Tema findOne(Long id);
 

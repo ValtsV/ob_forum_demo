@@ -23,6 +23,7 @@ public class Pregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(length = 4000)
     private String description;
     @Column(name = "created_at")
     private LocalDateTime createdAt;

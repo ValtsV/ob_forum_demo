@@ -20,7 +20,8 @@ public class TemaServiceImpl implements TemaService {
     TemaRepository temaRepo;
 
     @Override
-    public List<Tema> findAll() {
+    public List<Tema> findAll(String email) {
+//        TODO: filter by attended cursos by email
         return temaRepo.findAllByOrderByIsPinnedDesc();
     }
 

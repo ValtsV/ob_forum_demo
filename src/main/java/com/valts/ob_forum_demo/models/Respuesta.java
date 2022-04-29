@@ -21,7 +21,7 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "respuesta_text")
+    @Column(name = "respuesta_text", length = 4000)
     private String respuestaText;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
